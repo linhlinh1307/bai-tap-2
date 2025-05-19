@@ -119,6 +119,6 @@ public:
     void inThongTin() {
         cout << "Mã ðat truoc: " << maDatTruoc << ", Mã sách: " << maSach << ", Mã nguoi dùng: " << maNguoiDung
              << ", Ngày: " << ctime(&ngayDat)
-             << ", Hieu luc: " << (dangHieuLuc ? "Con hieu luc" : "H?t hi?u l?c") << endl;
+             << ", Hieu luc: " << (dangHieuLuc ? "Con hieu luc" : "Het hieu luc") << endl;
     }
 };
