@@ -51,7 +51,7 @@ public:
         : maSach(ma), ISBN(isbn), tenSach(ten), tacGia(tacgia), nhaXuatBan(nxb), namXuatBan(nam),
           ngonNgu(ngonngu), theLoai(theloai), soTrang(trang), keSach(ke), coSan(true) {}
 
-    void inThongTin() {
+    void inThongTin() const {
         cout << "[" << maSach << "] " << tenSach << " - " << tacGia << " (" << namXuatBan << ") "
              << "ISBN:" << ISBN << " - " << (coSan ? "Con sách" : "Ðang muon") << endl;
     }
@@ -96,7 +96,7 @@ public:
         cout << "Mã phieu : " << maPhieu << ", Mã  sách: " << maSach << ", Mã nguoi dùng: " << maNguoiDung
              << ", Ngày muonn: " << ctime(&ngayMuon)
              << ", Han tra: " << ctime(&hanTra)
-             << ", Trang thái: " << tinhTrangToString(tinhTrang);
+             << ", Trang thái: " << tinhTrangMuonToString(tinhTrang);
         if (tinhTrang == TinhTrangMuon::DaTra) {
             cout << ", Ngày tra: " << ctime(&ngayTra);
         }
