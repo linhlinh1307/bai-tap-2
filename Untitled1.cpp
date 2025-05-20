@@ -119,25 +119,6 @@ public:
     void inThongTin() {
         cout << "Mã ðat truoc: " << maDatTruoc << ", Mã sách: " << maSach << ", Mã nguoi dùng: " << maNguoiDung
              << ", Ngày: " << ctime(&ngayDat)
-             << ", Hieu luc: " << (dangHieuLuc ? "Con hieu luc" : "Het hieu luc") << endl;
-    }
-};
-// ==================== CLASS DAT TRUOC ====================
-class DatTruoc {
-public:
-    int maDatTruoc;
-    int maSach;
-    int maNguoiDung;
-    time_t ngayDat;
-    bool dangHieuLuc;
-
-    DatTruoc() : maDatTruoc(0), maSach(0), maNguoiDung(0), ngayDat(0), dangHieuLuc(true) {}
-    DatTruoc(int ma, int sach, int nguoidung, time_t ngay)
-        : maDatTruoc(ma), maSach(sach), maNguoiDung(nguoidung), ngayDat(ngay), dangHieuLuc(true) {}
-
-    void inThongTin() {
-        cout << "Mã ðat truoc: " << maDatTruoc << ", Mã sách: " << maSach << ", Mã nguoi dùng: " << maNguoiDung
-             << ", Ngày: " << ctime(&ngayDat)
              << ", Hieu luc: " << (dangHieuLuc ? "Con hieu luc" : "H?t hi?u l?c") << endl;
     }
 };
