@@ -122,3 +122,159 @@ public:
              << ", Hieu luc: " << (dangHieuLuc ? "Con hieu luc" : "Het hieu luc") << endl;
     }
 };
+// ==================== CLASS DAT TRUOC ====================
+class DatTruoc {
+public:
+    int maDatTruoc;
+    int maSach;
+    int maNguoiDung;
+    time_t ngayDat;
+    bool dangHieuLuc;
+
+    DatTruoc() : maDatTruoc(0), maSach(0), maNguoiDung(0), ngayDat(0), dangHieuLuc(true) {}
+    DatTruoc(int ma, int sach, int nguoidung, time_t ngay)
+        : maDatTruoc(ma), maSach(sach), maNguoiDung(nguoidung), ngayDat(ngay), dangHieuLuc(true) {}
+
+    void inThongTin() {
+        cout << "Mã ðat truoc: " << maDatTruoc << ", Mã sách: " << maSach << ", Mã nguoi dùng: " << maNguoiDung
+             << ", Ngày: " << ctime(&ngayDat)
+             << ", Hieu luc: " << (dangHieuLuc ? "Con hieu luc" : "H?t hi?u l?c") << endl;
+    }
+};
+
+// ==================== CLASS THU VIEN ====================
+class ThuVien {
+private:
+    vector<Sach> danhSachSach;
+    int maSachCuoi = 0;
+
+public:
+    void themSach(const Sach& sach) {
+        Sach moi = sach;
+        moi.maSach = ++maSachCuoi;
+        danhSachSach.push_back(moi);
+        cout << "Ðã thêm sách voi ma " << moi.maSach << endl;
+    }
+
+    bool suaSach(int ma, const Sach& capNhat) {
+        for (auto& s : danhSachSach) {
+            if (s.maSach == ma) {
+                s = capNhat;
+                s.maSach = ma;
+                cout << "Ða cap nhat sách ma " << ma << "." << endl;
+                return true;
+            }
+        }
+        cout << "Không tim thay sách ma " << ma << "." << endl;
+        return false;
+    }
+
+    bool xoaSach(int ma) {
+        auto it = remove_if(danhSachSach.begin(), danhSachSach.end(),
+                            [ma](const Sach& s) { return s.maSach == ma; });
+        if (it != danhSachSach.end()) {
+            danhSachSach.erase(it, danhSachSach.end());
+            cout << "Ða xóa sách ma " << ma << "." << endl;
+            return true;
+        }
+        cout << "Không tim thay sách ma " << ma << "." << endl;
+        return false;
+    }
+
+    vector<Sach> timKiemSach(const string& tuKhoa) {
+        vector<Sach> ketQua;
+        string tuKhoaThuong = tuKhoa;
+        transform(tuKhoaThuong.begin(), tuKhoaThuong.end(), tuKhoaThuong.begin(), ::tolower);
+
+        for (const auto& s : danhSachSach) {
+            string tongHop = s.tenSach + " " + s.tacGia + " " + s.theLoai + " " + s.nhaXuatBan;
+            string tongHopThuong = tongHop;
+            transform(tongHopThuong.begin(), tongHopThuong.end(), tongHopThuong.begin(), ::tolower);
+
+            if (tongHopThuong.find(tuKhoaThuong) != string::npos) {
+                ketQua.push_back(s);
+            }
+        }
+        return ketQua;
+    }
+
+    void sapXepSach(const string& tieuChi) {
+        if (tieuChi == "ten") {
+            sort(danhSachSach.begin(), danhSachSach.end(), [](const Sach& a, const Sach& b) {
+                return a.tenSach < b.tenSach;
+            });
+        } else if (tieuChi == "tacgia") {
+            sort(danhSachSach.begin(), danhSachSach.end(), [](const Sach& a, const Sach& b) {
+                return a.tacGia < b.tacGia;
+            });
+        } else if (tieuChi == "nam") {
+            sort(danhSachSach.begin(), danhSachSach.end(), [](const Sach& a, const Sach& b) {
+                return a.namXuatBan < b.namXuatBan;
+            });
+        } else {
+            cout << "Tiêu chí sap xep không hop li." << endl;
+        }
+    }
+
+    void inDanhSachSach() {
+        cout << "----- Danh sách sách (" << danhSachSach.size() << " cuón) -----" << endl;
+        for (const auto& s : danhSachSach) {
+            s.inThongTin();
+        }
+    }
+
+    void luuVaoTep(const string& tenTep) {
+        ofstream fout(tenTep);
+        if (!fout) {
+            cout << "Loi khi mo tep da luu." << endl;
+            return;
+        }
+        for (const auto& s : danhSachSach) {
+            fout << s.maSach << "|" << s.ISBN << "|" << s.tenSach << "|" << s.tacGia << "|" << s.nhaXuatBan << "|"
+                 << s.namXuatBan << "|" << s.ngonNgu << "|" << s.theLoai << "|" << s.soTrang << "|" << s.keSach << "|"
+                 << s.coSan << "\n";
+        }
+        fout.close();
+        cout << "Ða luu sách vào tep " << tenTep << endl;
+    }
+
+    void taiTuTep(const string& tenTep) {
+        ifstream fin(tenTep);
+        if (!fin) {
+            cout << "Không có tep de tai sách." << endl;
+            return;
+        }
+        danhSachSach.clear();
+        string dong;
+        while (getline(fin, dong)) {
+            Sach s;
+            size_t pos = 0, truoc = 0;
+            vector<string> truong;
+            while ((pos = dong.find('|', truoc)) != string::npos) {
+                truong.push_back(dong.substr(truoc, pos - truoc));
+                truoc = pos + 1;
+            }
+            truong.push_back(dong.substr(truoc));
+
+            if (truong.size() == 11) {
+                s.maSach = stoi(truong[0]);
+                s.ISBN = truong[1];
+                s.tenSach = truong[2];
+                s.tacGia = truong[3];
+                s.nhaXuatBan = truong[4];
+                s.namXuatBan = stoi(truong[5]);
+                s.ngonNgu = truong[6];
+                s.theLoai = truong[7];
+                s.soTrang = stoi(truong[8]);
+                s.keSach = truong[9];
+                s.coSan = (truong[10] == "1");
+
+                danhSachSach.push_back(s);
+                if (s.maSach > maSachCuoi) maSachCuoi = s.maSach;
+            }
+        }
+        fin.close();
+        cout << "Ða tai sách tu tep " << tenTep << endl;
+    }
+};
+
