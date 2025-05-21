@@ -12,10 +12,10 @@ enum class VaiTro { QuanTriVien, ThuThu, BanDoc };
 
 string vaiTroToString(VaiTro v) {
     switch (v) {
-        case VaiTro::QuanTriVien: return "Quan tri viÍn";
+        case VaiTro::QuanTriVien: return "Quan tri vi√™n";
         case VaiTro::ThuThu: return "Thu thu";
-        case VaiTro::BanDoc: return "Ban oc";
-        default: return "KhÙng x·c inh";
+        case VaiTro::BanDoc: return "Ban √∞oc";
+        default: return "Kh√¥ng x√°c √∞inh";
     }
 }
 
@@ -23,10 +23,10 @@ enum class TinhTrangMuon { DangMuon, DaTra, QuaHan };
 
 string tinhTrangMuonToString(TinhTrangMuon t) {
     switch (t) {
-        case TinhTrangMuon::DangMuon: return "–ang muon";
-        case TinhTrangMuon::DaTra: return "–a tra";
-        case TinhTrangMuon::QuaHan: return "Qu· han";
-        default: return "KhÙng x·c inh";
+        case TinhTrangMuon::DangMuon: return "√êang muon";
+        case TinhTrangMuon::DaTra: return "√êa tra";
+        case TinhTrangMuon::QuaHan: return "Qu√° han";
+        default: return "Kh√¥ng x√°c √∞inh";
     }
 }
 
@@ -53,7 +53,7 @@ public:
 
     void inThongTin() const {
         cout << "[" << maSach << "] " << tenSach << " - " << tacGia << " (" << namXuatBan << ") "
-             << "ISBN:" << ISBN << " - " << (coSan ? "Con s·ch" : "–ang muon") << endl;
+             << "ISBN:" << ISBN << " - " << (coSan ? "Con s√°ch" : "√êang muon") << endl;
     }
 };
 
@@ -93,12 +93,12 @@ public:
           ngayTra(0), tinhTrang(TinhTrangMuon::DangMuon) {}
 
     void inThongTin() {
-        cout << "M„ phieu : " << maPhieu << ", M„  s·ch: " << maSach << ", M„ nguoi d˘ng: " << maNguoiDung
-             << ", Ng‡y muonn: " << ctime(&ngayMuon)
+        cout << "M√£ phieu : " << maPhieu << ", M√£  s√°ch: " << maSach << ", M√£ nguoi d√πng: " << maNguoiDung
+             << ", Ng√†y muonn: " << ctime(&ngayMuon)
              << ", Han tra: " << ctime(&hanTra)
-             << ", Trang th·i: " << tinhTrangMuonToString(tinhTrang);
+             << ", Trang th√°i: " << tinhTrangMuonToString(tinhTrang);
         if (tinhTrang == TinhTrangMuon::DaTra) {
-            cout << ", Ng‡y tra: " << ctime(&ngayTra);
+            cout << ", Ng√†y tra: " << ctime(&ngayTra);
         }
     }
 };
@@ -117,8 +117,8 @@ public:
         : maDatTruoc(ma), maSach(sach), maNguoiDung(nguoidung), ngayDat(ngay), dangHieuLuc(true) {}
 
     void inThongTin() {
-        cout << "M„ at truoc: " << maDatTruoc << ", M„ s·ch: " << maSach << ", M„ nguoi d˘ng: " << maNguoiDung
-             << ", Ng‡y: " << ctime(&ngayDat)
+        cout << "M√£ √∞at truoc: " << maDatTruoc << ", M√£ s√°ch: " << maSach << ", M√£ nguoi d√πng: " << maNguoiDung
+             << ", Ng√†y: " << ctime(&ngayDat)
              << ", Hieu luc: " << (dangHieuLuc ? "Con hieu luc" : "H?t hi?u l?c") << endl;
     }
 };
@@ -134,7 +134,7 @@ public:
         Sach moi = sach;
         moi.maSach = ++maSachCuoi;
         danhSachSach.push_back(moi);
-        cout << "–„ thÍm s·ch voi ma " << moi.maSach << endl;
+        cout << "√ê√£ th√™m s√°ch voi ma " << moi.maSach << endl;
     }
 
     bool suaSach(int ma, const Sach& capNhat) {
@@ -142,11 +142,11 @@ public:
             if (s.maSach == ma) {
                 s = capNhat;
                 s.maSach = ma;
-                cout << "–a cap nhat s·ch ma " << ma << "." << endl;
+                cout << "√êa cap nhat s√°ch ma " << ma << "." << endl;
                 return true;
             }
         }
-        cout << "KhÙng tim thay s·ch ma " << ma << "." << endl;
+        cout << "Kh√¥ng tim thay s√°ch ma " << ma << "." << endl;
         return false;
     }
 
@@ -155,10 +155,10 @@ public:
                             [ma](const Sach& s) { return s.maSach == ma; });
         if (it != danhSachSach.end()) {
             danhSachSach.erase(it, danhSachSach.end());
-            cout << "–a xÛa s·ch ma " << ma << "." << endl;
+            cout << "√êa x√≥a s√°ch ma " << ma << "." << endl;
             return true;
         }
-        cout << "KhÙng tim thay s·ch ma " << ma << "." << endl;
+        cout << "Kh√¥ng tim thay s√°ch ma " << ma << "." << endl;
         return false;
     }
 
@@ -193,12 +193,12 @@ public:
                 return a.namXuatBan < b.namXuatBan;
             });
         } else {
-            cout << "TiÍu chÌ sap xep khÙng hop li." << endl;
+            cout << "Ti√™u ch√≠ sap xep kh√¥ng hop li." << endl;
         }
     }
 
     void inDanhSachSach() {
-        cout << "----- Danh s·ch s·ch (" << danhSachSach.size() << " cuÛn) -----" << endl;
+        cout << "----- Danh s√°ch s√°ch (" << danhSachSach.size() << " cu√≥n) -----" << endl;
         for (const auto& s : danhSachSach) {
             s.inThongTin();
         }
@@ -216,13 +216,13 @@ public:
                  << s.coSan << "\n";
         }
         fout.close();
-        cout << "–a luu s·ch v‡o tep " << tenTep << endl;
+        cout << "√êa luu s√°ch v√†o tep " << tenTep << endl;
     }
 
     void taiTuTep(const string& tenTep) {
         ifstream fin(tenTep);
         if (!fin) {
-            cout << "KhÙng cÛ tep de tai s·ch." << endl;
+            cout << "Kh√¥ng c√≥ tep de tai s√°ch." << endl;
             return;
         }
         danhSachSach.clear();
@@ -255,7 +255,127 @@ public:
             }
         }
         fin.close();
-        cout << "–a tai s·ch tu tep " << tenTep << endl;
+        cout << "√êa tai s√°ch tu tep " << tenTep << endl;
     }
 };
+// ==================== QUAN LI NGUOI D√ôNG ====================
+
+class QuanLyNguoiDung {
+private:
+    vector<NguoiDung> danhSachNguoiDung;   // Danh s√°ch nguoi d√πng
+    int idCuoi = 0;                   // ID nguoi d√πng cuoi c√πng
+
+public:
+    // Th√™m nguoi d√πng moi
+    void themNguoiDung(const NguoiDung& nguoiDung) {
+        NguoiDung nguoiMoi = nguoiDung;
+        nguoiMoi.maNguoiDung = ++idCuoi;
+        danhSachNguoiDung.push_back(nguoiMoi);
+        cout << "√ê? th√™m ng√Ω?i d√πng v?i ID " << nguoiMoi.maNguoiDung << endl;
+    }
+
+    // Sua th√¥ng tin nguoi d√πng theo ID
+    bool suaNguoiDung(int id, const NguoiDung& nguoiCapNhat) {
+        for (auto& u : danhSachNguoiDung) {
+            if (u.maNguoiDung == id) {
+                u = nguoiCapNhat;
+                u.maNguoiDung = id; // Giu nguy√™n ID
+                cout << "√êa cap nhat nguoi d√πng c√≥ ID " << id << "." << endl;
+                return true;
+            }
+        }
+        cout << "Kh√¥ng tim thay nguoi d√πng c√≥ ID " << id << "." << endl;
+        return false;
+    }
+
+    // X√≥a nguoi d√πng theo ID
+    bool xoaNguoiDung(int id) {
+        auto it = remove_if(danhSachNguoiDung.begin(), danhSachNguoiDung.end(),
+                            [id](const NguoiDung& u) { return u.maNguoiDung == id; });
+        if (it != danhSachNguoiDung.end()) {
+            danhSachNguoiDung.erase(it, danhSachNguoiDung.end());
+            cout << "√êa x√≥a nguoi d√πng c√≥ ID " << id << "." << endl;
+            return true;
+        }
+        cout << "Kh√¥ng tim thay nguoi d√πng c√≥ ID " << id << "." << endl;
+        return false;
+    }
+
+    // Tim kiem nguoi d√πng theo tu kh√≥a
+    vector<NguoiDung> timKiemNguoiDung(const string& tuKhoa) {
+        vector<NguoiDung> ketQua;
+        string tuKhoaThuong = tuKhoa;
+        transform(tuKhoaThuong.begin(), tuKhoaThuong.end(), tuKhoaThuong.begin(), ::tolower);
+
+        for (const auto& u : danhSachNguoiDung) {
+            string ketHop = u.maNguoiDung + " " + u.hoTen + " " + u.email;
+            string ketHopThuong = ketHop;
+            transform(ketHopThuong.begin(), ketHopThuong.end(), ketHopThuong.begin(), ::tolower);
+
+            if (ketHopThuong.find(tuKhoaThuong) != string::npos) {
+                ketQua.push_back(u);
+            }
+        }
+        return ketQua;
+    }
+
+    // In to√†n bo danh s√°ch nguoi d√πng
+    void inTatCaNguoiDung() {
+        cout << "----- Danh s√°ch nguoi d√πng (" << danhSachNguoiDung.size() << " nguoi) -----" << endl;
+        for (const auto& u : danhSachNguoiDung) {
+            u.inThongTin();
+        }
+    }
+
+    // Luu danh s√°ch nguoi d√πng v√†o tep
+    void luuVaoTep(const string& tenTep) {
+        ofstream fout(tenTep);
+        if (!fout) {
+            cout << "Loi khi mo tep √∞e luu nguoi d√πng." << endl;
+            return;
+        } 
+        for (const auto& u : danhSachNguoiDung) {
+            fout << u.maNguoiDung << "|" << u.tenDangNhap << "|" << u.matKhau << "|" << u.hoTen << "|"
+                 << u.email << "|" << (int)u.vaiTro << "\n";
+        }
+        fout.close();
+        cout << "√êa luu nguoi d√πng v√†o tep " << tenTep << endl;
+    }
+
+    // Tai danh s√°ch nguoi d√πng tu tep
+    void taiTuTep(const string& tenTep) {
+        ifstream fin(tenTep);
+        if (!fin) {
+            cout << "Kh√¥ng c√≥ tep n√†o √∞e tai nguoi d√πng." << endl;
+            return;
+        }
+        danhSachNguoiDung.clear();
+        string dong;
+        while (getline(fin, dong)) {
+            NguoiDung u;
+            size_t viTri = 0, truoc = 0;
+            vector<string> truong;
+            while ((viTri = dong.find('|', truoc)) != string::npos) {
+                truong.push_back(dong.substr(truoc, viTri - truoc));
+                truoc = viTri + 1;
+            }
+            truong.push_back(dong.substr(truoc));
+
+            if (truong.size() == 6) {
+                u.maNguoiDung = stoi(truong[0]);
+                u.tenDangNhap = truong[1];
+                u.matKhau = truong[2];
+                u.hoTen = truong[3];
+                u.email = truong[4];
+                u.vaiTro = static_cast<VaiTro>(stoi(truong[5]));
+
+                danhSachNguoiDung.push_back(u);
+                if (u.maNguoiDung > idCuoi) idCuoi = u.maNguoiDung;
+            }
+        }
+        fin.close();
+        cout << "√êa tai nguoi d√πng tu tep " << tenTep << endl;
+    }
+};
+
 
