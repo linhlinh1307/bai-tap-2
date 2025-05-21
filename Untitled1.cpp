@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -71,9 +72,9 @@ public:
     NguoiDung(int ma, string ten, string mk, string hoten, string mail, VaiTro vt)
         : maNguoiDung(ma), tenDangNhap(ten), matKhau(mk), hoTen(hoten), email(mail), vaiTro(vt) {}
 
-    void inThongTin() {
-        cout << "[" << maNguoiDung << "] " << hoTen << " (" << tenDangNhap << ") - Vai tro: " << vaiTroToString(vaiTro) << endl;
-    }
+    void inThongTin() const {
+    cout << "[" << maNguoiDung << "] " << hoTen << " (" << tenDangNhap << ") - Vai tro: " << vaiTroToString(vaiTro) << endl;
+}
 };
 
 // ==================== CLASS PHIEU MUON ====================
@@ -101,6 +102,7 @@ public:
             cout << ", NgÃ y tra: " << ctime(&ngayTra);
         }
     }
+    
 };
 
 // ==================== CLASS DAT TRUOC ====================
@@ -375,6 +377,125 @@ public:
         }
         fin.close();
         cout << "Ãa tai nguoi dÃ¹ng tu tep " << tenTep << endl;
+    }
+};
+// ==================== QUAN LI NGUOI DÙNG ====================
+
+class QuanLyNguoiDung {
+private:
+    vector<NguoiDung> danhSachNguoiDung;   // Danh sách nguoi dùng
+    int idCuoi = 0;                   // ID nguoi dùng cuoi cùng
+
+public:
+    // Thêm nguoi dùng moi
+    void themNguoiDung(const NguoiDung& nguoiDung) {
+        NguoiDung nguoiMoi = nguoiDung;
+        nguoiMoi.maNguoiDung = ++idCuoi;
+        danhSachNguoiDung.push_back(nguoiMoi);
+        cout << "Ð? thêm ngý?i dùng v?i ID " << nguoiMoi.maNguoiDung << endl;
+    }
+
+    // Sua thông tin nguoi dùng theo ID
+    bool suaNguoiDung(int id, const NguoiDung& nguoiCapNhat) {
+        for (auto& u : danhSachNguoiDung) {
+            if (u.maNguoiDung == id) {
+                u = nguoiCapNhat;
+                u.maNguoiDung = id; // Giu nguyên ID
+                cout << "Ða cap nhat nguoi dùng có ID " << id << "." << endl;
+                return true;
+            }
+        }
+        cout << "Không tim thay nguoi dùng có ID " << id << "." << endl;
+        return false;
+    }
+
+    // Xóa nguoi dùng theo ID
+    bool xoaNguoiDung(int id) {
+        auto it = remove_if(danhSachNguoiDung.begin(), danhSachNguoiDung.end(),
+                            [id](const NguoiDung& u) { return u.maNguoiDung == id; });
+        if (it != danhSachNguoiDung.end()) {
+            danhSachNguoiDung.erase(it, danhSachNguoiDung.end());
+            cout << "Ða xóa nguoi dùng có ID " << id << "." << endl;
+            return true;
+        }
+        cout << "Không tim thay nguoi dùng có ID " << id << "." << endl;
+        return false;
+    }
+
+    // Tim kiem nguoi dùng theo tu khóa
+    vector<NguoiDung> timKiemNguoiDung(const string& tuKhoa) {
+        vector<NguoiDung> ketQua;
+        string tuKhoaThuong = tuKhoa;
+        transform(tuKhoaThuong.begin(), tuKhoaThuong.end(), tuKhoaThuong.begin(), ::tolower);
+
+        for (const auto& u : danhSachNguoiDung) {
+            string ketHop = u.maNguoiDung + " " + u.hoTen + " " + u.email;
+            string ketHopThuong = ketHop;
+            transform(ketHopThuong.begin(), ketHopThuong.end(), ketHopThuong.begin(), ::tolower);
+
+            if (ketHopThuong.find(tuKhoaThuong) != string::npos) {
+                ketQua.push_back(u);
+            }
+        }
+        return ketQua;
+    }
+
+    // In toàn bo danh sách nguoi dùng
+    void inTatCaNguoiDung() {
+        cout << "----- Danh sách nguoi dùng (" << danhSachNguoiDung.size() << " nguoi) -----" << endl;
+        for (const auto& u : danhSachNguoiDung) {
+            u.inThongTin();
+        }
+    }
+
+    // Luu danh sách nguoi dùng vào tep
+    void luuVaoTep(const string& tenTep) {
+        ofstream fout(tenTep);
+        if (!fout) {
+            cout << "Loi khi mo tep ðe luu nguoi dùng." << endl;
+            return;
+        } 
+        for (const auto& u : danhSachNguoiDung) {
+            fout << u.maNguoiDung << "|" << u.tenDangNhap << "|" << u.matKhau << "|" << u.hoTen << "|"
+                 << u.email << "|" << (int)u.vaiTro << "\n";
+        }
+        fout.close();
+        cout << "Ða luu nguoi dùng vào tep " << tenTep << endl;
+    }
+
+    // Tai danh sách nguoi dùng tu tep
+    void taiTuTep(const string& tenTep) {
+        ifstream fin(tenTep);
+        if (!fin) {
+            cout << "Không có tep nào ðe tai nguoi dùng." << endl;
+            return;
+        }
+        danhSachNguoiDung.clear();
+        string dong;
+        while (getline(fin, dong)) {
+            NguoiDung u;
+            size_t viTri = 0, truoc = 0;
+            vector<string> truong;
+            while ((viTri = dong.find('|', truoc)) != string::npos) {
+                truong.push_back(dong.substr(truoc, viTri - truoc));
+                truoc = viTri + 1;
+            }
+            truong.push_back(dong.substr(truoc));
+
+            if (truong.size() == 6) {
+                u.maNguoiDung = stoi(truong[0]);
+                u.tenDangNhap = truong[1];
+                u.matKhau = truong[2];
+                u.hoTen = truong[3];
+                u.email = truong[4];
+                u.vaiTro = static_cast<VaiTro>(stoi(truong[5]));
+
+                danhSachNguoiDung.push_back(u);
+                if (u.maNguoiDung > idCuoi) idCuoi = u.maNguoiDung;
+            }
+        }
+        fin.close();
+        cout << "Ða tai nguoi dùng tu tep " << tenTep << endl;
     }
 };
 
